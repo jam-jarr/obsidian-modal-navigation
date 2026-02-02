@@ -65,8 +65,6 @@ export default class VimEmacsNavigationPlugin extends Plugin {
 					return;
 				}
 			},
-			// needed to capture modal events
-			{ capture: true },
 		);
 	}
 }
