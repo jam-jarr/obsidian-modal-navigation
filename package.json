@@ -1,5 +1,5 @@
 {
-	"name": "obsidian-sample-plugin",
+	"name": "vimlike-modal-navigation",
 	"version": "1.0.0",
 	"description": "Navigate modal options using vim/emacs style bindings.",
 	"main": "main.js",
