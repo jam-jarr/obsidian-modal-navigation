@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-modal-navigation",
 	"name": "Vim-like Modal Navigation",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"minAppVersion": "1.11.5",
 	"description": "Navigate modal options using vim/emacs style bindings.",
 	"author": "Jamie Giarratana",
