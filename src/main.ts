@@ -1,5 +1,9 @@
 import { Plugin } from "obsidian";
 
+const blacklist = [
+	'omnisearch-modal'
+]
+
 function isVisible(el: HTMLElement): boolean {
 	if (!el.isConnected) return false;
 	const style = window.getComputedStyle(el);
@@ -10,11 +14,25 @@ function isVisible(el: HTMLElement): boolean {
 	return rect.width > 0 && rect.height > 0;
 }
 
-function getActiveSuggestionContainer(): HTMLElement | null {
-	const containers = Array.from(
-		document.querySelectorAll<HTMLElement>(".prompt"),
-	);
-	return containers.find(isVisible) ?? null;
+function getActiveSuggestionContainer(blacklist: Array<string> = []): HTMLElement | null {
+	// const containers = Array.from(
+	// 	document.querySelectorAll<HTMLElement>(".prompt"),
+	// );
+	// console.log("containers: ", containers.length);
+	// return containers.find(isVisible) ?? null;
+	const container = document.querySelector<HTMLElement>(".prompt");
+	if (!container) return null;
+	if (!isVisible(container)) return null;
+	console.log(blacklist);
+	console.log(container.className);
+	const classNames = container.className.split(" ");
+	for (const className of classNames) {
+		if (blacklist.contains(className)) {
+			console.log("blacklisted: ", className);
+			return null;
+		}
+	}
+	return container;
 }
 
 function dispatchArrowKey(key: "ArrowDown" | "ArrowUp"): void {
@@ -42,8 +60,9 @@ export default class VimEmacsNavigationPlugin extends Plugin {
 				const downKeys = ['n', 'j'];
 				const upKeys = ['p', 'k'];
 
-				const container = getActiveSuggestionContainer();
+				const container = getActiveSuggestionContainer(blacklist);
 				if (!container) return;
+				console.log('why am I here?')
 
 				const key = evt.key.toLowerCase();
 
