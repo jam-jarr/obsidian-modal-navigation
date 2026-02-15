@@ -15,11 +15,6 @@ function isVisible(el: HTMLElement): boolean {
 }
 
 function getActiveSuggestionContainer(blacklist: Array<string> = []): HTMLElement | null {
-	// const containers = Array.from(
-	// 	document.querySelectorAll<HTMLElement>(".prompt"),
-	// );
-	// console.log("containers: ", containers.length);
-	// return containers.find(isVisible) ?? null;
 	const container = document.querySelector<HTMLElement>(".prompt");
 	if (!container) return null;
 	if (!isVisible(container)) return null;
