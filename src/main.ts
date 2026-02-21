@@ -20,7 +20,6 @@ function getActiveSuggestionContainer(blacklist: Array<string> = []): HTMLElemen
 	const classNames = container.className.split(" ");
 	for (const className of classNames) {
 		if (blacklist.includes(className)) {
-			console.log("blacklisted: ", className);
 			return null;
 		}
 	}
@@ -68,7 +67,6 @@ export default class VimEmacsNavigationPlugin extends Plugin {
 
 				const container = getActiveSuggestionContainer(this.settings.blacklist);
 				if (!container) return;
-				console.log("why am I here?");
 
 				const key = evt.key.toLowerCase();
 
