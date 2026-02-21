@@ -1,8 +1,5 @@
 import { Plugin } from "obsidian";
-
-const blacklist = [
-	'omnisearch-modal'
-]
+import { PluginSettings, DEFAULT_SETTINGS, VimModalNavigationSettingTab } from "./settings";
 
 function isVisible(el: HTMLElement): boolean {
 	if (!el.isConnected) return false;
@@ -43,8 +40,22 @@ function dispatchArrowKey(key: "ArrowDown" | "ArrowUp"): void {
 }
 
 export default class VimEmacsNavigationPlugin extends Plugin {
+
+	settings: PluginSettings;
+
+	async loadSettings(): Promise<void> {
+		this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
+	}
+
+	async saveSettings(): Promise<void> {
+		await this.saveData(this.settings);
+	}
+
 	async onload() {
-		// Use capture phase: built-in modals frequently stop propagation.
+		await this.loadSettings();
+
+		this.addSettingTab(new VimModalNavigationSettingTab(this.app, this));
+
 		this.registerDomEvent(
 			window,
 			"keydown",
@@ -52,23 +63,23 @@ export default class VimEmacsNavigationPlugin extends Plugin {
 				if (!evt.ctrlKey) return;
 				if (evt.altKey || evt.metaKey || evt.shiftKey) return;
 
-				const downKeys = ['n', 'j'];
-				const upKeys = ['p', 'k'];
+				const downKeys = ["n", "j"];
+				const upKeys = ["p", "k"];
 
-				const container = getActiveSuggestionContainer(blacklist);
+				const container = getActiveSuggestionContainer(this.settings.blacklist);
 				if (!container) return;
-				console.log('why am I here?')
+				console.log("why am I here?");
 
 				const key = evt.key.toLowerCase();
 
-				if (upKeys.contains(key)) {
+				if (upKeys.includes(key)) {
 					evt.preventDefault();
 					evt.stopPropagation();
 					if (typeof evt.stopImmediatePropagation === "function") {
 						evt.stopImmediatePropagation();
 					}
 					dispatchArrowKey("ArrowUp");
-				} else if (downKeys.contains(key)) {
+				} else if (downKeys.includes(key)) {
 					evt.preventDefault();
 					evt.stopPropagation();
 					if (typeof evt.stopImmediatePropagation === "function") {
