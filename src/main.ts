@@ -22,7 +22,7 @@ function getActiveSuggestionContainer(blacklist: Array<string> = []): HTMLElemen
 	console.log(container.className);
 	const classNames = container.className.split(" ");
 	for (const className of classNames) {
-		if (blacklist.contains(className)) {
+		if (blacklist.includes(className)) {
 			console.log("blacklisted: ", className);
 			return null;
 		}
